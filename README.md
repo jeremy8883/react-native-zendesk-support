@@ -1,3 +1,7 @@
+This is a fork of [this repo](https://github.com/RobertSheaO/react-native-zendesk-support). It exists as a temporary fix for the `callSupport` and `showHelpCenter` functions on android, as per [this issue](https://github.com/RobertSheaO/react-native-zendesk-support/issues/10).
+
+---
+
 # react-native-zendesk-support
 React Native bridge to Zendesk Support SDK on iOS and Android. This currently only supports using the out of the box views the Zendesk Support SDK provides. At the moment, only anonymous authentication is supported.
 

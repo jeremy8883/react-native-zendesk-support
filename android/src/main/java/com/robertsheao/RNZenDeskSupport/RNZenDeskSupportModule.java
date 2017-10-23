@@ -4,6 +4,10 @@
 
 package com.robertsheao.RNZenDeskSupport;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -85,12 +89,20 @@ public class RNZenDeskSupportModule extends ReactContextBaseJavaModule {
         }
       }
     }
-    new SupportActivity
-      .Builder()
-      .withArticleVoting(articleVotingEnabled)
-      .withContactUsButtonVisibility(withContactUsButtonVisibility)
-      .showConversationsMenuButton(showConversationsMenuButton)
-      .show(getReactApplicationContext());
+
+    Activity activity = getCurrentActivity();
+
+    if (activity != null) {
+      Intent intent = new Intent(getReactApplicationContext(), SupportActivity.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      Bundle args = new Bundle();
+      args.putBoolean("article_voting_enabled", articleVotingEnabled);
+      args.putSerializable("extra_contact_us_button_visibility", withContactUsButtonVisibility);
+      args.putBoolean("extra_show_conversations_menu_button", showConversationsMenuButton);
+      intent.putExtras(args);
+
+      getReactApplicationContext().startActivity(intent);
+    }
   }
 
   @ReactMethod
@@ -228,7 +240,13 @@ public class RNZenDeskSupportModule extends ReactContextBaseJavaModule {
 
     ZendeskConfig.INSTANCE.setCustomFields(fields);
 
-    ContactZendeskActivity.startActivity(getReactApplicationContext(), null);
+    Activity activity = getCurrentActivity();
+
+    if(activity != null){
+      Intent contactIntent = new Intent(getReactApplicationContext(), ContactZendeskActivity.class);
+      contactIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      getReactApplicationContext().startActivity(contactIntent);
+    }
   }
 
   @ReactMethod
